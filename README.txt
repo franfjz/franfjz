@@ -1,6 +1,7 @@
 Bienvenid@ a este programita para scrapear HTML.
 
-Por defecto, reduce el html a la etiqueta y es capaz de extraer elementos anidados. El resultado es una lista de cadenas de texto.
+Por defecto, busca dentro de la etiqueta body, fuera de header y footer.
+Reduce el html a la etiqueta y es capaz de extraer elementos anidados. El resultado es una lista de cadenas de texto.
 
 resultado = scraper(data, "etiqueta", "parámetro", "atributo/s", "filtrar_texto")
 
