@@ -8,19 +8,17 @@ resultado = scraper(data, "etiqueta", "parámetro", "atributo/s", "filtrar_texto
 Inputs de la función:
 
 -- data -> es la variable que contiene el texto html del que queremos extraer los datos. Lo convierte a cadena de texto.
--- etiqueta -> es una cadena de texto con la etiqueta/tag. Puede ser "div", "a", "p"... Identifica las que tienen apertura y cierre.
--- parámetro -> es una cadena de texto con el nombre del parámetro contenido en la etiqueta. Por ejemplo: "class", "id", "href",...
--- atributo/s -> es una cadena de texto con uno o varios atributos dentro de un parámetro concreto. Por ejemplo: "col-md-3", "id_5"...
--- filtrar_texto (opcional) -> es el texto que debe aparecer en el contenido dentro de la etiqueta
+-- etiqueta -> es una cadena de texto con la etiqueta/tag. Identifica las que tienen apertura y cierre. Ej: "div", "p", "a"... 
+-- parámetro -> es una cadena de texto con el nombre del parámetro contenido en la etiqueta. Ej: "class", "id", "href",...
+-- atributo/s -> es una cadena de texto con uno o varios atributos dentro de un parámetro concreto. Ej.: "col-md-3"...
+-- filtrar_texto (opcional) -> es el texto que debe aparecer en el contenido dentro de la etiqueta.
 
 -------------- Ejemplos de uso --------------
 
 El ejemplo más básico es buscar una etiqueta, parámetro y atributo concreto.
 
-Si queremos buscar los elementos "
+Si queremos buscar los elementos en <code><div class="ejemplo">XXX</div></code> podemos usar:
 
-XXX
-" de un código html, podemos usar:
 resultado = scraper(data, "div", "class", "ejemplo", "")
 Devolverá una lista con todas las etiquetas div class="ejemplo" y su contenido
 
