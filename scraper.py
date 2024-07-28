@@ -1,88 +1,71 @@
 def preparar_html(d: str):
-    # REEMPLAZAR CARACTERES DE HTML
-    
+
     d = str(d)
 
+    tags_borrar = ["script", "style", "<!--"]
+    partes_borrar = ["header", "footer"] 
+
+    # REEMPLAZAR CARACTERES DE HTML
+    
     limpiar = [
         ["\n", ""], ["  ", " "],                            # quitar saltos de línea y espacios dobles
         ["-- >", "-->"], ["< !--", "<!--"],                 # corregir espacios antes y después de ">" y "<" en comentarios
         ["='", '="'], ["' ", '" '], ["'>", '">'],           # sustituir " ' " por ' " ' dentro de contenedores
-
         ["&nbsp;", " "], ["&lt;", "<"], ["&gt;", ">"],      # entidades clave html (key html entities)
         ["&amp;", "&"], ["&quot;", '"'], ["&euro;", "€"],   # LISTA COMPLETA: https://www.freeformatter.com/html-entities.html
         ["&laquo;", "«"], ["&raquo;", "»"]
         ]
-
     for x in limpiar:
         if x[0] in d:
             d = d.replace(x[0], x[1])
-
-
-    # BORRAR ETIQUETAS DE HTML
 
     def eliminar_etiqueta(d: str, tag: str):
         """
         Elimina todas las etiquetas y su contenido en HTML
         """    
-
         i = "<"+tag
         f = "</"+tag+">"
-
         if tag == "<!--": # tag comentarios
             i = "<!--"
             f = "-->"
-
         # Eliminar cierres sin abrir (al inicio del texto) ... d.find(i) - apertura // d.find(f) - cierre
         while d.find(f) < d.find(i) and d.find(f) != -1: 
             d = d[d.find(f)+len(f):]
-
         # Eliminar aperturas sin cerrar (al final del texto)... d.rfind(i) - última apertura // d.rfind(f) - último cierre
         while d.rfind(i) > d.rfind(f) and d.rfind(i) != -1: 
             d = d[:d.rfind(i)]
-
         # Eliminar etiquetas en el texto ... d.find(i) - apertura // d.find(f) - cierre
-        
         for _ in range(d.count(i)):
             tag = d[d.find(i):d.find(f)+len(f)]
             d = d.replace(tag, "")
-
         return d
 
     # borrar etiquetas de javascript, estilos CSS y comentarios
-
-    tags_borrar = ["script", "style", "<!--"]
-
-    for tag in tags_borrar:
-        d = eliminar_etiqueta(d, tag)
-
+    
     # Limitar al body
     if "<body" in d:
         d = d[d.find("<body"):d.find("</body>")+7]
 
+    # Eliminar tags
+    for tag in tags_borrar:
+        d = eliminar_etiqueta(d, tag)
+
     # Borrar partes de una web que sólo aparecen una vez
-
-    partes_borrar = ["header", "footer"] 
-
     for parte in partes_borrar:
         if "<"+parte in d:
             d = d.replace(d[d.find("<"+parte):d.find("</"+parte+">")+len(parte)+3], "")
 
-
     # EXTRAER TAGS
-
     # La estrategia si basa en encontrar primero los cierres (</div>, </a>, </p>...) 
     # e incluirlos a tags si hay aperturas que coincidan (<div, <a, <p...)
-
     tags: list = d.split("</")
     t_cierre: set = {x[:x.find(">")] for x in tags if ">" in x}
     tags: set = {x for x in t_cierre if "<"+x in d}
-
+    
     # d es el código html limpio
     # tags es la lista de etiquetas de contenedores en el código html 
 
     return d, tags
-
-
 
 
 def listar_parametros(d: str, tag: str):
