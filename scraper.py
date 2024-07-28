@@ -71,7 +71,6 @@ def preparar_html(d: str):
 def listar_parametros(d: str, tag: str):
 
     contenedores: list = d.split("<"+tag)
-    #contenedores = contenedores[1:]
     contenedores: list = list("<"+tag + x[:x.find(">")+1] for x in contenedores[1:])
 
     def extraer_parametros(tag: str, contenedor: list):
@@ -89,7 +88,6 @@ def listar_parametros(d: str, tag: str):
     # parametros: un set con los parámetros disponibles para ese tag sin duplicados: "class, id..."
 
     return contenedores, parametros
-
 
 
 def listar_atributos(contenedores: list, pmt: str):
@@ -132,7 +130,6 @@ def seleccionar_contenedores(contenedores_pmt: list, pmt: str, atb: str):
     def contenedor_parametro_campo(cont: list, pmt:str, atb: str):
         cont = cont[cont.find(pmt+'="')+len(pmt)+2:]
         cont = cont[:cont.find('"')]
-
         return cont.split(" ")
 
     if " " not in atb:
@@ -162,13 +159,11 @@ def seleccionar_contenedores(contenedores_pmt: list, pmt: str, atb: str):
 def extraer_texto(d: str, tag: str, contenedores: list):
 
     def obtener_posiciones(d: str, tag: str):
-
+        
         tag_i = "<"+tag
         tag_f = "</"+tag+">"
-
         n_tag_i = d.count(tag_i) #cuenta las veces que aparece la apertura del tag en data
         n_tag_f = d.count(tag_f) #cuenta las veces que aparece el cierre del tag en data
-
 
         def indexar_tag(d: str, tag: str, n_tag: int):
 
@@ -195,8 +190,6 @@ def extraer_texto(d: str, tag: str, contenedores: list):
         
         return indice_i, indice_f
 
-
-
     #AL LÍO
 
     # La idea es utilizar índices de los tags de apertura y cierre para identificar elementos anidados
@@ -219,7 +212,6 @@ def extraer_texto(d: str, tag: str, contenedores: list):
         # Esto ayuda a empezar por una lista de posibles cierres, descartando los anteriores.
         indice_f_reformado = list(i for i in indice_f if i > indice_i[indice])
 
-        
         # Itera la lista de aperturas. Es importante que i comience como 1, en "range(1, len(indice_i))"
         # El número "i" determina la posición de las siguientes aperturas que va a comparar con el primer cierre 
 
@@ -238,13 +230,9 @@ def extraer_texto(d: str, tag: str, contenedores: list):
                 # Si no estuviera, añadiría uno de los divs de cierre.
 
                 posicion_apertura = indice_i[indice]
-                posicion_cierre = indice_f_reformado[0 + i]
-
                 posicion_cierre = indice_f_reformado[0 + i -1]
 
                 # Añade los fragmentos de d a la lista de resultados
-
-
 
                 resultado.append(d[posicion_apertura:posicion_cierre + len("</"+tag+">")])
 
@@ -266,18 +254,13 @@ def extraer_texto(d: str, tag: str, contenedores: list):
     return resultado
 
 
-
-
 def scraper(d: str, tag: str, pmt: str, atb: str, contiene_texto: str):
 
     resultado = []
 
-    #print(tag, pmt, atb, contiene_texto)
-
     d, tags = preparar_html(d) #preparar el html
     tags = sorted(list(tags))
     tags.append("todos")
-    #print("- tags", tags)
 
     # Para empezar, necesita que el tag que se busque esté en la lista de tags disponibles
     #while tag not in tags:
