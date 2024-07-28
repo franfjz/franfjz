@@ -17,7 +17,7 @@ Inputs de la función:
 
 El ejemplo más básico es buscar una etiqueta, parámetro y atributo concreto.
 
-Si queremos buscar los elementos en <code><div class="ejemplo">XXX</div></code> podemos usar:
+Si queremos buscar los elementos en <div class="ejemplo">XXX</div> podemos usar:
 
 resultado = scraper(data, "div", "class", "ejemplo", "")
 Devolverá una lista con todas las etiquetas div class="ejemplo" y su contenido
